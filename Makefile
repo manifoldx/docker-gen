@@ -4,7 +4,8 @@
 TAG:=`git describe --tags`
 LDFLAGS:=-X main.buildVersion=$(TAG)
 
-all: docker-gen
+all: 
+	docker-gen
 
 docker-gen:
 	echo "Building docker-gen"
@@ -16,7 +17,8 @@ dist-clean:
 	rm -f docker-gen-linux-*.tar.gz
 	rm -f docker-gen-darwin-*.tar.gz
 
-dist: dist-clean
+dist: 
+	dist-clean
 	mkdir -p dist/alpine-linux/amd64 && GOOS=linux GOARCH=amd64 go build -ldflags "$(LDFLAGS)" -a -tags netgo -installsuffix netgo -o dist/alpine-linux/amd64/docker-gen ./cmd/docker-gen
 	mkdir -p dist/alpine-linux/arm64 && GOOS=linux GOARCH=arm64 go build -ldflags "$(LDFLAGS)" -a -tags netgo -installsuffix netgo -o dist/alpine-linux/arm64/docker-gen ./cmd/docker-gen
 	mkdir -p dist/alpine-linux/armhf && GOOS=linux GOARCH=arm GOARM=6 go build -ldflags "$(LDFLAGS)" -a -tags netgo -installsuffix netgo -o dist/alpine-linux/armhf/docker-gen ./cmd/docker-gen
@@ -29,7 +31,8 @@ dist: dist-clean
 	mkdir -p dist/darwin/i386  && GOOS=darwin GOARCH=386 go build -ldflags "$(LDFLAGS)" -o dist/darwin/i386/docker-gen ./cmd/docker-gen
 
 
-release: dist
+release:
+	dist
 	glock sync -n < GLOCKFILE
 	tar -cvzf docker-gen-alpine-linux-amd64-$(TAG).tar.gz -C dist/alpine-linux/amd64 docker-gen
 	tar -cvzf docker-gen-alpine-linux-arm64-$(TAG).tar.gz -C dist/alpine-linux/arm64 docker-gen
