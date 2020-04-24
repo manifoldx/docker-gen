@@ -10,7 +10,7 @@ import (
 
 	"github.com/BurntSushi/toml"
 	docker "github.com/fsouza/go-dockerclient"
-	"github.com/GeorgeLee134/docker-gen"
+	"../.."
 )
 
 type stringslice []string
