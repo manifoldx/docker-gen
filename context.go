@@ -198,7 +198,7 @@ func matchDockerCurrentContainerID(lines string) string {
 }
 
 func matchECSCurrentContainerID(lines string) string {
-	regex := "/ecs\\/[^\\/]+\\/.+(.{64})$"
+	regex := "/ecs/.+([[:alnum:]]{64})$"
 	re := regexp.MustCompilePOSIX(regex)
 
 	if re.MatchString(string(lines)) {
