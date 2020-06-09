@@ -18,28 +18,28 @@ import (
 type stringslice []string
 
 var (
-	buildVersion            string
-	version                 bool
-	watch                   bool
-	wait                    string
-	notifyCmd               string
-	notifyOutput            bool
-	notifyContainerID     	string
-	notifyContainerSignal	int
-	onlyExposed             bool
-	onlyPublished           bool
-	includeStopped          bool
-	configFiles             stringslice
-	configs                 dockergen.ConfigFile
-	interval                int
-	keepBlankLines          bool
-	endpoint                string
-	tlsCert                 string
-	tlsKey                  string
-	tlsCaCert               string
-	tlsVerify               bool
-	tlsCertPath             string
-	wg                      sync.WaitGroup
+	buildVersion          string
+	version               bool
+	watch                 bool
+	wait                  string
+	notifyCmd             string
+	notifyOutput          bool
+	notifyContainerID     string
+	notifyContainerSignal int
+	onlyExposed           bool
+	onlyPublished         bool
+	includeStopped        bool
+	configFiles           stringslice
+	configs               dockergen.ConfigFile
+	interval              int
+	keepBlankLines        bool
+	endpoint              string
+	tlsCert               string
+	tlsKey                string
+	tlsCaCert             string
+	tlsVerify             bool
+	tlsCertPath           string
+	wg                    sync.WaitGroup
 )
 
 func (strings *stringslice) String() string {
