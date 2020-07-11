@@ -1,8 +1,10 @@
 .SILENT :
-.PHONY : docker-gen clean fmt
+.PHONY : docker-gen dist dist-clean release check-gofmt test
 
 TAG:=`git describe --tags`
 LDFLAGS:=-X main.buildVersion=$(TAG)
+# https://stackoverflow.com/a/58185179
+LDFLAGS+=-linkmode external -w -extldflags "-static"
 
 all: docker-gen
 
