@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/foomo/htpasswd"
 	"io"
 	"io/ioutil"
 	"log"
@@ -319,6 +320,14 @@ func hashSha1(input string) string {
 	return fmt.Sprintf("%x", h.Sum(nil))
 }
 
+func setHTPasswd(file, name, password string) (bool, error) {
+	err := htpasswd.SetPassword(file, name, password, htpasswd.HashBCrypt)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
 func marshalJson(input interface{}) (string, error) {
 	var buf bytes.Buffer
 	enc := json.NewEncoder(&buf)
@@ -452,6 +461,7 @@ func newTemplate(name string) *template.Template {
 		"parseJson":              unmarshalJson,
 		"queryEscape":            url.QueryEscape,
 		"sha1":                   hashSha1,
+		"setHTPasswd":            setHTPasswd,
 		"split":                  strings.Split,
 		"splitN":                 strings.SplitN,
 		"trimPrefix":             trimPrefix,
