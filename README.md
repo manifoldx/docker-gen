@@ -1,17 +1,18 @@
 docker-gen
 =====
 
-![latest 0.8.1](https://img.shields.io/badge/latest-0.8.1-green.svg?style=flat)
-[![Build Status](https://travis-ci.org/joellinn/docker-gen.svg?branch=master)](https://travis-ci.org/github/joellinn/docker-gen)
+![latest 0.8.3](https://img.shields.io/badge/latest-0.8.3-green.svg?style=flat)
+[![Travis CI](https://travis-ci.org/bugficks/docker-gen.svg?branch=master)](https://travis-ci.org/github/bugficks/docker-gen)
+[![CircleCI](https://circleci.com/gh/bugficks/docker-gen.svg?style=svg)](https://circleci.com/gh/bugficks/docker-gen)
 ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 
 `docker-gen` is a file generator that renders templates using docker container meta-data.
 
 It can be used to generate various kinds of files for:
 
- * **Centralized logging** - [fluentd](https://github.com/joellinn/docker-gen/blob/master/templates/fluentd.conf.tmpl), logstash or other centralized logging tools that tail the containers JSON log file or files within the container.
- * **Log Rotation** - [logrotate](https://github.com/joellinn/docker-gen/blob/master/templates/logrotate.tmpl) files to rotate container JSON log files
- * **Reverse Proxy Configs** - [nginx](https://github.com/joellinn/docker-gen/blob/master/templates/nginx.tmpl), [haproxy](https://github.com/jwilder/docker-discover), etc. reverse proxy configs to route requests from the host to containers
+ * **Centralized logging** - [fluentd](https://github.com/bugficks/docker-gen/blob/master/templates/fluentd.conf.tmpl), logstash or other centralized logging tools that tail the containers JSON log file or files within the container.
+ * **Log Rotation** - [logrotate](https://github.com/bugficks/docker-gen/blob/master/templates/logrotate.tmpl) files to rotate container JSON log files
+ * **Reverse Proxy Configs** - [nginx](https://github.com/bugficks/docker-gen/blob/master/templates/nginx.tmpl), [haproxy](https://github.com/jwilder/docker-discover), etc. reverse proxy configs to route requests from the host to containers
  * **Service Discovery** - Scripts (python, bash, etc..) to register containers within [etcd](https://github.com/jwilder/docker-register), hipache, etc..
 
 ===
@@ -25,12 +26,12 @@ There are three common ways to run docker-gen:
 
 #### Host Install
 
-Linux/OSX binaries for [release](https://github.com/joellinn/docker-gen/releases)
+Linux/OSX binaries for [release](https://github.com/bugficks/docker-gen/releases)
 
 Download the version you need, untar, and install to your PATH.
 
 ```
-$ wget https://github.com/joellinn/docker-gen/releases/download/VERSION/docker-gen-linux-amd64-VERSION.tar.gz
+$ wget https://github.com/bugficks/docker-gen/releases/download/VERSION/docker-gen-linux-amd64-VERSION.tar.gz
 $ tar xvzf docker-gen-linux-amd64-VERSION.tar.gz
 $ ./docker-gen
 ```
@@ -438,13 +439,8 @@ $ docker-gen -notify "/bin/bash /tmp/etcd.sh" -interval 10 templates/etcd.tmpl /
 
 ### Development
 
-This project uses [glock](https://github.com/robfig/glock) for managing 3rd party dependencies.
-You'll need to install glock into your workspace before hacking on docker-gen.
-
 ```
 $ git clone <your fork>
-$ cd <your fork>
-$ make get-deps
 $ make
 ```
 
