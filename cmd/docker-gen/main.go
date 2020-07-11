@@ -11,7 +11,9 @@ import (
 	"syscall"
 
 	"github.com/BurntSushi/toml"
-	"github.com/JoelLinn/docker-gen"
+	//dockergen "github.com/JoelLinn/docker-gen"
+	//dockergen "../.."
+	dockergen "docker-gen"
 	docker "github.com/fsouza/go-dockerclient"
 )
 
