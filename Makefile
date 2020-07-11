@@ -1,7 +1,7 @@
 .SILENT :
 .PHONY : docker-gen dist dist-clean release check-gofmt test
 
-TAG:=`git describe --tags`
+TAG:=$(shell git describe --tags)
 LDFLAGS:=-X main.buildVersion=$(TAG)
 # https://stackoverflow.com/a/58185179
 LDFLAGS_EXTRA=-linkmode external -w -extldflags "-static"
@@ -53,3 +53,10 @@ check-gofmt:
 
 test:
 	go test ./...
+
+github_release: SHELL=/bin/bash
+github_release:
+	if [[ ${TAG} =~ ^[0-9]+\.[0-9]+\.[0-9]+$$ ]]; then \
+		go get github.com/tcnksm/ghr; \
+		ghr -t $${GITHUB_TOKEN} -u $${CIRCLE_PROJECT_USERNAME} -r $${CIRCLE_PROJECT_REPONAME} -c $${CIRCLE_SHA1} -delete ${TAG} ./release/; \
+	fi;

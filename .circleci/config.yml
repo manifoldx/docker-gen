@@ -32,7 +32,4 @@ jobs:
       - run: make release
       - run:
           name: "Publish Release on GitHub"
-          command: |
-            go get github.com/tcnksm/ghr
-            TAG=$(git describe --tags)
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${TAG} ./release/
+          command: make github_release
