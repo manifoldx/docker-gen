@@ -54,14 +54,6 @@ check-gofmt:
 test:
 	go test ./...
 
-.PHONY: github_release
-github_release: SHELL=/bin/bash
-github_release:
-	if [[ ${TAG} =~ ^[0-9]+\.[0-9]+\.[0-9]+$$ ]]; then \
-		go get github.com/tcnksm/ghr; \
-		ghr -t $${GITHUB_TOKEN} -u $${CIRCLE_PROJECT_USERNAME} -r $${CIRCLE_PROJECT_REPONAME} -c $${CIRCLE_SHA1} -delete ${TAG} ./release/; \
-	fi;
-
 # build docker image from either latest release on github or local directory
 # BUILD_ENV: (github | local) default=github
 .PHONY: docker-image

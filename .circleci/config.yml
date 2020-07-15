@@ -19,17 +19,38 @@ jobs:
     ####   /go/src/bitbucket.org/circleci/go-tool
     working_directory: /go/src/github.com/bugficks/docker-gen
     steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "5c:26:7f:82:3f:d7:78:22:07:65:c4:c1:e2:b1:c9:ce"
-
       - checkout
-      - attach_workspace:
-          at: ./release
-
-      # specify any bash command here prefixed with `run: `
       - run: make test check-gofmt all
       - run: make release
+      - run: echo "export VERSION=$(git describe --tags)" >> VERSION
+      - persist_to_workspace:
+          root: .
+          paths:
+            - VERSION
+            - release/*
+
+  publish-github-release:
+    docker:
+      - image: cibuilds/github:0.10
+    steps:
+      - attach_workspace:
+          at: .
       - run:
           name: "Publish Release on GitHub"
-          command: make github_release
+          command: |
+            source VERSION
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./release/
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - build
+      - publish-github-release:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d+\.\d+\.\d+$/
