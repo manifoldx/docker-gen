@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/foomo/htpasswd"
 	"io"
 	"io/ioutil"
 	"log"
@@ -19,6 +18,8 @@ import (
 	"strings"
 	"syscall"
 	"text/template"
+
+	"github.com/foomo/htpasswd"
 )
 
 func exists(path string) (bool, error) {
@@ -320,8 +321,15 @@ func hashSha1(input string) string {
 	return fmt.Sprintf("%x", h.Sum(nil))
 }
 
-func setHTPasswd(file, name, password string) (bool, error) {
-	err := htpasswd.SetPassword(file, name, password, htpasswd.HashBCrypt)
+// no bcrypt on debian. default to sha instead
+// https://github.com/nginxinc/docker-nginx/issues/29#issuecomment-194817391
+func setHTPasswd(file, name, password, algo string) (bool, error) {
+	if algo == "" {
+		algo = htpasswd.HashSHA
+	} else {
+		strings.ToLower(algo)
+	}
+	err := htpasswd.SetPassword(file, name, password, htpasswd.HashAlgorithm(algo))
 	if err != nil {
 		return false, err
 	}
