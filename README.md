@@ -1,10 +1,11 @@
 docker-gen
 =====
 
-![latest 0.8.3](https://img.shields.io/badge/latest-0.8.3-green.svg?style=flat)
+![latest 0.8.5](https://img.shields.io/badge/latest-0.8.5-green.svg?style=flat)
 [![Travis CI](https://travis-ci.org/bugficks/docker-gen.svg?branch=master)](https://travis-ci.org/github/bugficks/docker-gen)
 [![CircleCI](https://circleci.com/gh/bugficks/docker-gen.svg?style=svg)](https://circleci.com/gh/bugficks/docker-gen)
 ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
+![Go Version](https://img.shields.io/github/go-mod/go-version/bugficks/docker-gen)
 
 `docker-gen` is a file generator that renders templates using docker container meta-data.
 
