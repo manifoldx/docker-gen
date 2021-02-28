@@ -6,7 +6,7 @@ jobs:
   build:
     docker:
       # specify the version
-      - image: circleci/golang:1.14
+      - image: circleci/golang:1.16
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -41,6 +41,7 @@ jobs:
             source VERSION
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./release/
 
+# https://circleci.com/docs/2.0/workflows/#executing-workflows-for-a-git-tag
 workflows:
   version: 2
   untagged-build:
