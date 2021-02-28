@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"sync"
 
-	"github.com/fsouza/go-dockerclient"
+	docker "github.com/fsouza/go-dockerclient"
 )
 
 var (
@@ -161,24 +161,27 @@ type Docker struct {
 }
 
 func GetCurrentContainerID() string {
-	file, err := os.Open("/proc/self/cgroup")
+	filepaths := []string{"/proc/self/cgroup", "/proc/self/mountinfo"}
 
-	if err != nil {
-		return ""
-	}
+	for _, filepath := range filepaths {
+		file, err := os.Open(filepath)
+		if err != nil {
+			continue
+		}
 
-	reader := bufio.NewReader(file)
-	scanner := bufio.NewScanner(reader)
-	scanner.Split(bufio.ScanLines)
+		reader := bufio.NewReader(file)
+		scanner := bufio.NewScanner(reader)
+		scanner.Split(bufio.ScanLines)
 
-	for scanner.Scan() {
-		_, lines, err := bufio.ScanLines([]byte(scanner.Text()), true)
-		if err == nil {
-			strLines := string(lines)
-			if id := matchDockerCurrentContainerID(strLines); id != "" {
-				return id
-			} else if id := matchECSCurrentContainerID(strLines); id != "" {
-				return id
+		for scanner.Scan() {
+			_, lines, err := bufio.ScanLines([]byte(scanner.Text()), true)
+			if err == nil {
+				strLines := string(lines)
+				if id := matchDockerCurrentContainerID(strLines); id != "" {
+					return id
+				} else if id := matchECSCurrentContainerID(strLines); id != "" {
+					return id
+				}
 			}
 		}
 	}
@@ -187,12 +190,12 @@ func GetCurrentContainerID() string {
 }
 
 func matchDockerCurrentContainerID(lines string) string {
-	regex := "/docker[/-]([[:alnum:]]{64})(\\.scope)?$"
+	regex := "/docker(/containers)?[/-]([[:alnum:]]{64})(/|$)"
 	re := regexp.MustCompilePOSIX(regex)
 
 	if re.MatchString(lines) {
 		submatches := re.FindStringSubmatch(string(lines))
-		containerID := submatches[1]
+		containerID := submatches[len(submatches)-2]
 
 		return containerID
 	}
